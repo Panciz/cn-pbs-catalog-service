@@ -5,15 +5,25 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestPropertySource(properties = "polar.greeting=hello test")
 class CatalogServiceApplicationTests {
 
     @Autowired
     private WebTestClient webTestClient;
+
+
+    @Test
+    void whenGetRequestForHome() {
+        webTestClient.get().uri("/").exchange()
+                .expectStatus().is2xxSuccessful().expectBody(String.class)
+                .value(msg->assertThat(msg).isEqualTo("hello test"));
+    }
 
     @Test
     void whenGetRequestWithIdThenBookReturned() {
@@ -104,7 +114,7 @@ class CatalogServiceApplicationTests {
                 .exchange()
                 .expectStatus().isNotFound()
                 .expectBody(String.class).value(errorMessage ->
-                    assertThat(errorMessage).isEqualTo("The book with ISBN " + bookIsbn + " was not found.")
+                        assertThat(errorMessage).isEqualTo("The book with ISBN " + bookIsbn + " was not found.")
                 );
     }
 
