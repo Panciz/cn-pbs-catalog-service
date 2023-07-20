@@ -67,7 +67,7 @@ kubectl expose deployment catalog-service --name=catalog-service --port=9001
 ### Port forwarding from localhost to Kubernetes cluster
 
 ```bash
-kubectl port-forward service/catalog-service 8000:8080
+kubectl port-forward service/catalog-service 8080:8080
 ```
 
 ### Delete Deployment for application container
