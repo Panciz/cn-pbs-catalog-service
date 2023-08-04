@@ -10,6 +10,17 @@ sourceCompatibility = '17'
 
 description = 'Provides functionality for managing the books in the catalog.'
 
+def secrets = new Properties()
+def secretFile= file('secrets.properties')
+if(secretFile.exists() ){
+	secretFile.withInputStream {
+		stream -> secrets.load(stream)
+	}
+}
+
+
+println(secrets.registryUsername)
+
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
@@ -51,6 +62,24 @@ dependencyManagement {
 
 bootRun {
 	systemProperty 'spring.profiles.active', 'testdata'
+}
+
+bootBuildImage {
+	if(secrets.registryUrl){
+		imageName = "${secrets.registryUrl}/${secrets.registryUsername.toLowerCase()}/${project.name}"
+	}else{
+		imageName="${project.name}"
+	}
+	environment = ["BP_JVM_VERSION": "17.*"]
+
+	//Push image da locale creare segreti in
+	docker {
+		publishRegistry {
+			username = secrets.registryUsername
+			password = secrets.registryToken
+			url = secrets.registryUrl
+		}
+	}
 }
 
 tasks.named('test') {
