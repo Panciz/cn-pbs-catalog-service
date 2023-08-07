@@ -52,35 +52,16 @@ docker run --rm --name catalog-service -p 8080:9001 catalog-service:0.0.3-SNAPSH
 
 ## Kubernetes tasks
 
-### Create Deployment for application container
-
-```bash
-kubectl create deployment catalog-service --image=catalog-service:0.0.3-SNAPSHOT
+```
+ k apply -f kubernetes/platform/development/services/postgresql.yml 
+ k apply -f k8s/deployment.yml      
+ k apply -f k8s/deployment.yml      
+ k apply -f ../config-service/k8s/deployment.yml 
+ k apply -f ../config-service/k8s/service.yml
+ k apply -f ../config-service/k8s/service.yml
 ```
 
-### Create Service for application Deployment
 
-```bash
-kubectl expose deployment catalog-service --name=catalog-service --port=9001
-```
-
-### Port forwarding from localhost to Kubernetes cluster
-
-```bash
-kubectl port-forward service/catalog-service 8080:8080
-```
-
-### Delete Deployment for application container
-
-```bash
-kubectl delete deployment catalog-service
-```
-
-### Delete Service for application container
-
-```bash
-kubectl delete service catalog-service
-```
 ## Running a PostgreSQL Database
 
 Run PostgreSQL as a Docker container
