@@ -97,4 +97,11 @@ select * from flyway_schema_history;
  k apply -f k8s/service.yml      
  k apply -f ../config-service/k8s/deployment.yml 
  k apply -f ../config-service/k8s/service.yml
+ k apply -f ../order-service/k8s/deployment.yml 
+ k apply -f ../order-service/k8s/service.yml
+ 
+ 
+kubectl port-forward svc/catalog-service 8080:80 & \
+kubectl port-forward svc/order-service 8081:80 &
+ 
 ```
