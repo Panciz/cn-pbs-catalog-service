@@ -50,41 +50,17 @@ docker run --rm --name catalog-service -p 8080:9001 catalog-service:0.0.3-SNAPSH
 | `docker start catalog-service`  | Start container.  |
 | `docker remove catalog-service` | Remove container. |
 
-## Kubernetes tasks
-
-```
- k apply -f kubernetes/platform/development/services/postgresql.yml 
- k apply -f k8s/deployment.yml      
- k apply -f k8s/deployment.yml      
- k apply -f ../config-service/k8s/deployment.yml 
- k apply -f ../config-service/k8s/service.yml
- k apply -f ../config-service/k8s/service.yml
-```
 
 
-## Running a PostgreSQL Database
+
+### Run Only Database
 
 Run PostgreSQL as a Docker container
 
 ```bash
-docker run -d \
-    --name polar-postgres \
-    -e POSTGRES_USER=user \
-    -e POSTGRES_PASSWORD=password \
-    -e POSTGRES_DB=polardb_catalog \
-    -p 5432:5432 \
-    postgres:14.4
+docker compose -f docker/docker-compose-db-only.yml up -d
 ```
 
-### Container Commands
-
-| Docker Command	                     | Description       |
-|:------------------------------------|:-----------------:|
-| `docker stop polar-postgres`        | Stop container.   |
-| `docker start polar-postgres`       | Start container.  |
-| `docker remove polar-postgres`      | Remove container. |
-
-### Database Commands
 
 Start an interactive PSQL console:
 
@@ -111,4 +87,14 @@ The following query is to fetch all the data stored in the `flyway_schema_histor
 
 ```bash
 select * from flyway_schema_history;
+```
+
+## Kubernetes tasks
+
+```
+ k apply -f kubernetes/platform/development/services/postgresql.yml 
+ k apply -f k8s/deployment.yml      
+ k apply -f k8s/service.yml      
+ k apply -f ../config-service/k8s/deployment.yml 
+ k apply -f ../config-service/k8s/service.yml
 ```
