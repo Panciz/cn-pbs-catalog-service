@@ -9,5 +9,14 @@ services:
     environment:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=password
+      - BPL_JVM_THREAD_COUNT=50
+      # Buildpacks environment variable to enable debug through a socket on port 9888
+      - BPL_DEBUG_ENABLED=true
+      - BPL_DEBUG_PORT=9888
     volumes:
       - ./postgresql/init.sql:/docker-entrypoint-initdb.d/init.sql
+  polar-redis:
+    image: "redis:7.0"
+    container_name: "polar-redis"
+    ports:
+      - 6379:6379
