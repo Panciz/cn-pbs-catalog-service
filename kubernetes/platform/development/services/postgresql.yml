@@ -4,6 +4,7 @@ metadata:
   name: postgres-config
   labels:
     db: polar-postgres
+    platform: polar-catalog
 data:
   init.sql: |
     CREATE DATABASE polardb_catalog;
@@ -16,6 +17,7 @@ kind: Deployment
 metadata:
   name: polar-postgres
   labels:
+    platform: polar-catalog
     db: polar-postgres
 spec:
   selector:
@@ -24,6 +26,7 @@ spec:
   template:
     metadata:
       labels:
+        platform: polar-catalog
         db: polar-postgres
     spec:
       containers:
@@ -56,6 +59,7 @@ kind: Service
 metadata:
   name: polar-postgres
   labels:
+    platform: polar-catalog
     db: polar-postgres
 spec:
   type: ClusterIP

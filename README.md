@@ -91,17 +91,46 @@ select * from flyway_schema_history;
 
 ## Kubernetes tasks
 
+Lanciare `./gradlew bootBuildImage` su tutti i progetti
+(ignorare ` saving image: fetching base layers: unexpected EOF` )
+
 ```
  k apply -f kubernetes/platform/development/services/postgresql.yml 
+ k apply -f kubernetes/platform/development/services/redis.yml 
+
  k apply -f k8s/deployment.yml      
  k apply -f k8s/service.yml      
  k apply -f ../config-service/k8s/deployment.yml 
  k apply -f ../config-service/k8s/service.yml
  k apply -f ../order-service/k8s/deployment.yml 
  k apply -f ../order-service/k8s/service.yml
+ k apply -f ../edge-service/k8s/deployment.yml 
+ k apply -f ../edge-service/k8s/service.yml 
+ ```
+
+
+
+to access from the external
+
+With ingress (vedi postman env `CN Polar Bookshow Local k8 ingress.postman_environment`)
+
+```
+helm upgrade --install ingress-nginx ingress-nginx \
+  --repo https://kubernetes.github.io/ingress-nginx \
+  --namespace ingress-nginx --create-namespace
  
+ k apply -f ../edge-service/k8s/ingress.yml 
+```
+
+Alternatevly With port forwarding `CN Polar Bookshow Local k8.postman_environment`
  
+```
 kubectl port-forward svc/catalog-service 8080:80 & \
 kubectl port-forward svc/order-service 8081:80 &
- 
+```
+
+to get status
+
+```
+$ k get all,ingress -l platform=polar-catalog
 ```

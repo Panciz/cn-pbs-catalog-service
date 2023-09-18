@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: polar-redis
   labels:
+    platform: polar-catalog
     db: polar-redis
 spec:
   selector:
@@ -11,6 +12,7 @@ spec:
   template:
     metadata:
       labels:
+        platform: polar-catalog
         db: polar-redis
     spec:
       containers:
@@ -31,6 +33,7 @@ kind: Service
 metadata:
   name: polar-redis
   labels:
+    platform: polar-catalog
     db: polar-redis
 spec:
   type: ClusterIP
